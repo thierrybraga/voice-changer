@@ -1,367 +1,106 @@
-# Realtime Voice Changer Client for RVC Tutorial (v.1.5.3.13)
+
+# Cliente de Conversão de Voz em Tempo Real para RVC Tutorial (v.1.5.3.13)
 
 [Japanese/日本語](/tutorials/tutorial_rvc_ja_latest.md) [Korean/한국어](/tutorials/tutorial_rvc_ko_latest.md)
 
-# Introduction
+## Introdução
 
-This application is client software for real-time voice conversion that supports various voice conversion models. This application support the models including RVC, MMVCv13, MMVCv15, So-vits-svcv40, etc. However, this document focus on [RVC(Retrieval-based-Voice-Conversion)](https://github.com/liujing04/Retrieval-based-Voice-Conversion-WebUI) for voice conversion as the tutorial material. The basic operations for each model are essentially the same.
+Este aplicativo é um software cliente para conversão de voz em tempo real que suporta vários modelos de conversão de voz. Ele suporta modelos como RVC, MMVCv13, MMVCv15, So-vits-svcv40, entre outros. No entanto, este documento foca na [RVC (Retrieval-based-Voice-Conversion)](https://github.com/liujing04/Retrieval-based-Voice-Conversion-WebUI) para conversão de voz como material de tutorial. As operações básicas para cada modelo são essencialmente as mesmas.
 
-From the following, the original [Retrieval-based-Voice-Conversion-WebUI](https://github.com/RVC-Project/Retrieval-based-Voice-Conversion-WebUI) is referred to as the original-RVC, [RVC-WebUI](https://github.com/ddPn08/rvc-webui) created by ddPn08 is referred to as ddPn08-RVC.
+A partir daqui, a [Retrieval-based-Voice-Conversion-WebUI](https://github.com/RVC-Project/Retrieval-based-Voice-Conversion-WebUI) original será chamada de "original-RVC", e a [RVC-WebUI](https://github.com/ddPn08/rvc-webui) criada por ddPn08 será chamada de "ddPn08-RVC".
 
-## Notes
+## Observações
 
-- Model training must be done separately.
-  - If you want to learn by yourself, please go to [original-RVC](https://github.com/liujing04/Retrieval-based-Voice-Conversion-WebUI) or [ddPn08RVC](https://github.com/ddPn08/rvc-webui).
-  - [Recording app on Github Pages](https://w-okada.github.io/voice-changer/) is convenient for preparing voice for learning on the browser.
-    - [Commentary video] (https://youtu.be/s_GirFEGvaA)
-  - [TIPS for training](https://github.com/RVC-Project/Retrieval-based-Voice-Conversion-WebUI/blob/main/docs/training_tips_en.md) has been published, so please refer to it.
+- O treinamento de modelos deve ser feito separadamente.
+  - Se você quiser aprender por conta própria, consulte [original-RVC](https://github.com/liujing04/Retrieval-based-Voice-Conversion-WebUI) ou [ddPn08RVC](https://github.com/ddPn08/rvc-webui).
+  - O [App de Gravação no Github Pages](https://w-okada.github.io/voice-changer/) é conveniente para preparar a voz para aprendizado no navegador.
+    - [Vídeo Explicativo](https://youtu.be/s_GirFEGvaA)
+  - Consulte [Dicas para Treinamento](https://github.com/RVC-Project/Retrieval-based-Voice-Conversion-WebUI/blob/main/docs/training_tips_en.md) para mais detalhes.
 
-# Steps up to startup
+## Passos até a Inicialização
 
-## Start GUI
+### Versão para Windows
 
-### Windows version,
+Descompacte o arquivo ZIP baixado e execute `start_http.bat`.
 
-Unzip the downloaded zip file and run `start_http.bat`.
+Se você tiver uma versão antiga, certifique-se de descompactá-la em uma pasta separada.
 
-If you have the old version, be sure to unzip it into a separate folder.
+### Versão para Mac
 
-### Mac version
+O procedimento é o seguinte:
 
-It is launched as follows.
+1. Descompacte o arquivo baixado.
+2. Em seguida, execute o **MMVCServerSIO** mantendo pressionada a tecla de controle e clicando nele (ou clique com o botão direito para executar). Se aparecer uma mensagem dizendo que o desenvolvedor não pode ser verificado, execute-o novamente pressionando a tecla de controle e clicando nele (ou clique com o botão direito para executar). O terminal será aberto e o processo terminará em alguns segundos.
+3. Execute o arquivo **startHTTP.command** mantendo pressionada a tecla de controle e clicando nele (ou clique com o botão direito para executar). Se aparecer uma mensagem dizendo que o desenvolvedor não pode ser verificado, repita o processo. Um terminal será aberto, iniciando o processo de inicialização.
 
-1. Unzip the downloaded file.
+- **Nota**: O importante é executar o **MMVCServerSIO** primeiro e depois o **startHTTP.command**.
 
-1. Next, run MMVCServerSIO by hold down the control key and clicking it (or right-click to run it). If a message appears stating that the developer cannot be verified, run it again by holding down the control key and clicking it (or right-click to run it). The terminal will open and the process will finish within a few seconds.
+Se você tiver uma versão antiga, certifique-se de descompactá-la em uma pasta separada.
 
-1. Next, execute the startHTTP.command by holding down the control key and clicking on it (or you can also right-click to run it). If a message appears stating that the developer cannot be verified, repeat the process by holding down the control key and clicking on it (or perform a right-click to run it). A terminal will open, and the launch process will begin.
+### Precauções ao Conectar-se Remotamente
 
-- In other words, the key is to run both MMVCServerSIO and startHTTP.command. Moreover, you need to run MMVCServerSIO first.
+Ao se conectar remotamente, use o arquivo `.bat` (Windows) ou `.command` (Mac), onde o HTTP foi substituído por HTTPS.
 
-If you have the old version, be sure to unzip it into a separate folder.
-
-### Precautions when connecting remotely
-
-When connecting remotely, please use `.bat` file (win) and `.command` file (mac) where http is replaced with https.
-
-Access with Browser (currently only chrome is supported), then you can see gui.
+Acesse com um navegador (atualmente, apenas o Chrome é suportado) e você verá a interface gráfica.
 
 ### Console
 
-When you run a .bat file (Windows) or .command file (Mac), a screen like the following will be displayed and various data will be downloaded from the Internet at the initial start-up. Depending on your environment, it may take 1-2 minutes in many cases.
+Ao executar o arquivo `.bat` (Windows) ou `.command` (Mac), uma tela como a seguinte será exibida, e vários dados serão baixados da Internet na inicialização. Dependendo do ambiente, isso pode levar de 1 a 2 minutos.
 
 ![image](https://github.com/w-okada/voice-changer/assets/48346627/88a30097-2fb3-4c50-8bf1-19c41f27c481)
 
-### GUI
+### Interface Gráfica (GUI)
 
-Once the download of the required data is complete, a dialog like the one below will be displayed. If you wish, press the yellow icon to reward the developer with a cup of coffee. Pressing the Start button will make the dialog disappear.
+Após o download dos dados necessários, uma tela como a abaixo será exibida. Se desejar, pressione o ícone amarelo para recompensar o desenvolvedor com uma xícara de café. Pressionar o botão "Start" fará com que o diálogo desapareça.
 
 ![image](https://github.com/w-okada/voice-changer/assets/48346627/a8d12b5c-d1e8-4ca6-aed0-72cee6bb97c1)
 
-# GUI Overview
+## Visão Geral da Interface Gráfica
 
-Use this screen to operate.
+Use esta tela para operar o software.
 
 ![image](https://github.com/w-okada/voice-changer/assets/48346627/27add00d-5059-4cbf-a732-9deb6dc309ff)
 
-# Quick start
+## Início Rápido
 
-You can immediately perform voice conversion using the data downloaded at startup.
+Você pode realizar a conversão de voz imediatamente usando os dados baixados na inicialização.
 
-## Operation
+### Operação
 
-(1) To get started, click on the Model Selection area to select the model you would like to use. Once the model is loaded, the images of the characters will be displayed on the screen.
-
-(2) Select the microphone (input) and speaker (output) you wish to use. If you are unfamiliar, we recommend selecting the client and then selecting your microphone and speaker. (We will explain the difference between server later).
-
-(3) When you press the start button, the audio conversion will start after a few seconds of data loading. Try saying something into the microphone. You should be able to hear the converted audio from the speaker.
+1. Para começar, clique na área de seleção de modelos para escolher o modelo que deseja usar. Após o carregamento, as imagens dos personagens serão exibidas na tela.
+2. Selecione o microfone (entrada) e o alto-falante (saída) que deseja usar. Recomendamos que escolha o cliente e depois selecione seu microfone e alto-falante. (Explicaremos a diferença entre servidor mais tarde).
+3. Quando você pressionar o botão "Start", a conversão de áudio começará após alguns segundos de carregamento. Fale algo no microfone, e você deverá ouvir o áudio convertido no alto-falante.
 
 ![image](https://github.com/w-okada/voice-changer/assets/48346627/883b296e-e5ca-4571-8fed-dcf7495ebb92)
 
-## FAQ on Quick Start
+### Perguntas Frequentes sobre o Início Rápido
 
-Q1. The audio is becoming choppy and stuttering.
+**P1. O áudio está cortando ou gaguejando.**
 
-A1. It is possible that your PC's performance is not adequate. Try increasing the CHUNK value (as shown in Figure as A, for example, 1024). Also try setting F0 Det to dio (as shown in Figure as B).
+R1. É possível que o desempenho do seu PC não seja suficiente. Tente aumentar o valor do CHUNK (como mostrado na figura com a letra A, por exemplo, para 1024). Também tente configurar o F0 Det para "dio" (como mostrado na figura com a letra B).
 
 ![image](https://github.com/w-okada/voice-changer/assets/48346627/3c485d9b-53be-47c1-85d9-8663363b06f9)
 
-Q2. The voice is not being converted.
+**P2. A voz não está sendo convertida.**
 
-A2. Refer to [this](https://github.com/w-okada/voice-changer/blob/master/tutorials/trouble_shoot_communication_ja.md) and identify where the problem lies, and consider a solution.
+R2. Consulte [este link](https://github.com/w-okada/voice-changer/blob/master/tutorials/trouble_shoot_communication_ja.md) para identificar o problema e buscar uma solução.
 
-Q3. The pitch is off.
+**P3. O tom está fora do esperado.**
 
-A3. Although it wasn't explained in the Quick Start, if the model is pitch-changeable, you can change it with TUNE. Please refer to the more detailed explanation below.
+R3. Embora não explicado no Início Rápido, se o modelo for compatível com ajuste de tom, você pode alterá-lo com o controle "TUNE". Consulte a explicação detalhada abaixo.
 
-Q4. The window doesn't show up or the window shows up but the contents are not displayed. A console error such as `electron: Failed to load URL: http://localhost:18888/ with error: ERR_CONNECTION_REFUSED` is displayed.
+**P4. A janela não aparece ou aparece mas sem conteúdo, e um erro de console como `electron: Failed to load URL: http://localhost:18888/ with error: ERR_CONNECTION_REFUSED` é exibido.**
 
-A4. There is a possibility that the virus checker is running. Please wait or designate the folder to be excluded at your own risk.
+R4. Pode ser que o antivírus esteja interferindo. Aguarde ou defina a pasta como uma exceção no antivírus (por sua própria conta e risco).
 
-Q5. `[4716:0429/213736.103:ERROR:gpu_init.cc(523)] Passthrough is not supported, GL is disabled, ANGLE is` is displayed
+**P5. O erro `[4716:0429/213736.103:ERROR:gpu_init.cc(523)] Passthrough is not supported, GL is disabled, ANGLE is` está aparecendo.**
 
-A5. This is an error produced by the library used by this application, but it does not have any effect, so please ignore it.
+R5. Este é um erro da biblioteca usada pelo aplicativo, mas não afeta o funcionamento, então ignore.
 
-Q6. My AMD GPU isn't being used.
+**P6. Minha GPU AMD não está sendo usada.**
 
-A6. Please use the DirectML version. Additionally, AMD GPUs are only enabled for ONNX models. You can judge this by the GPU utilization rate going up in the Performance Monitor.([see here](https://github.com/w-okada/voice-changer/issues/383))
+R6. Use a versão DirectML. GPUs AMD só são compatíveis com modelos ONNX. Verifique o aumento no uso da GPU no Monitor de Desempenho.
 
-Q7. onxxruntime is not launching and it's producing an error.
+**P7. O onxxruntime não está iniciando e exibe um erro.**
 
-A7. It appears that an error occurs if the folder path contains unicode. Please extract to a path that does not use unicode (just alphanumeric characters). (Reference: https://github.com/w-okada/voice-changer/issues/528)
-
-## Configurable items
-
-## Title
-
-![image](https://github.com/w-okada/voice-changer/assets/48346627/bb813fbb-4ea1-4c3b-87b0-da75b7eaac5e)
-
-Icons are links.
-
-| Icon                                                                                                                               | To                |
-| :--------------------------------------------------------------------------------------------------------------------------------- | :---------------- |
-| <img src="https://github.com/w-okada/rvc-trainer-docker/assets/48346627/97c18ca5-eee5-4be2-92a7-8092fff960f2" width="32"> Octocat  | github repository |
-| <img src="https://github.com/w-okada/rvc-trainer-docker/assets/48346627/751164e4-7b7d-4d7e-b49c-1ad660bf7439" width="32"> question | manual            |
-| <img src="https://github.com/w-okada/rvc-trainer-docker/assets/48346627/7bc188db-3aae-43eb-98a1-34aacc16173d" width="32"> spanner  | tools             |
-| <img src="https://github.com/w-okada/rvc-trainer-docker/assets/48346627/5db16acc-e901-40d2-8fc2-1fb9fd67f59c" width="32"> coffee   | donation          |
-
-### clear setting
-
-Initialize configuration.
-
-## Model Selection
-
-![image](https://github.com/w-okada/voice-changer/assets/48346627/503eb581-a560-42b2-985b-d229d186eac8)
-
-Select the model you wish to use.
-
-By pressing the "edit" button, you can edit the list of models (model slots). Please refer to the model slots editing screen for more details.
-
-## Main Control
-
-![image](https://github.com/w-okada/voice-changer/assets/48346627/4401acdb-eb58-40e1-9609-5a82ee5eb570)
-
-A character image loaded on the left side will be displayed. The status of real-time voice changer is overlaid on the top left of the character image.
-
-You can use the buttons and sliders on the right side to control various settings.
-
-### status of real-time voice changer
-
-The lag time from speaking to conversion is `buf + res` seconds. When adjusting, please adjust the buffer time to be longer than the res time.
-
-#### vol
-
-This is the volume after voice conversion.
-
-#### buf
-
-The length of each chunk in milliseconds when capturing audio. Shortening the CHUNK will decrease this number.
-
-#### res
-
-The time it takes to convert data with CHUNK and EXTRA added is measured. Decreasing either CHUNK or EXTRA will reduce the number.
-
-### Control
-
-#### start/stop button
-
-Press "start" to begin voice conversion and "stop" to end it.
-
-#### pass through button
-
-When this button is pressed, the sound inputted will be outputted as is.
-
-The sound inputted will be outputted as is.. By default, a confirmation dialog will appear when it's activated, but you can skip this dialog through the Advanced Settings.
-
-#### GAIN
-
-- in: Change the volume of the inputted audio for the model.
-
-- out: Change the volume of the converted audio.
-
-#### TUNE
-
-Enter a value for how much to convert the pitch of the voice. Conversion can also be done during inference. Below are some guidelines for settings.
-
-- +12 for male voice to female voice conversion
-- -12 for female voice to male voice conversion
-
-#### INDEX (Only for RVC)
-
-You can specify the rate of weight assigned to the features used in training. This is only valid for models which have an index file registered. 0 uses HuBERT's output as-is and 1 assigns all weights to the original features. If the index ratio is greater than 0, it may take longer to search.
-
-#### Voice
-
-Set the speaker of the audio conversion.
-
-#### save setting
-
-Save the settings specified. When the model is recalled again, the settings will be reflected. (Excluding some parts).
-
-#### export to onnx
-
-This output will convert the PyTorch model to ONNX. It is only valid if the loaded model is a RVC PyTorch model.
-
-#### Others
-
-The item that can be configured by the AI model used will vary. Please check the features and other information on the model manufacturer's website.
-
-## Configuration
-
-![image](https://github.com/w-okada/voice-changer/assets/48346627/cd04ba9f-f7e8-4a7e-8c93-cda3c81f3c1a)
-
-You can review the action settings and transformation processes.
-
-#### NOISE
-
-You can switch the noise cancellation feature on and off, however it is only available in Client Device Mode.
-
-- Echo: Echo Cancellation Function
-- Sup1, Sup2: This is a noise suppression feature.
-
-#### F0 Det (F0 Extractor)
-
-Choose an algorithm for extracting the pitch. You can choose from the following options. AMD is available for only onnx.
-
-| F0 Extractor | type  | description                 |
-| ------------ | ----- | --------------------------- |
-| dio          | cpu   | lightweight                 |
-| harvest      | cpu   | High-precision              |
-| crepe        | torch | GPU-enabled、high-precision |
-| crepe full   | onnx  | GPU-enabled、high-precision |
-| crepe tiny   | onnx  | GPU-enabled、lightweight    |
-| rnvpe        | torch | GPU-enabled、high-precision |
-
-#### S. Thresh (Noise Gate)
-
-This is the threshold of the volume for performing speech conversion. When the rms is smaller than this value, speech conversion will be skipped and silence will be returned instead. (In this case, since the conversion process is skipped, the burden will not be so large.)
-
-#### CHUNK (Input Chunk Num)
-
-Decide how much length to cut and convert in one conversion. The higher the value, the more efficient the conversion, but the larger the buf value, the longer the maximum time before the conversion starts. The approximate time is displayed in buff:.
-
-#### EXTRA (Extra Data Length)
-
-Determines how much past audio to include in the input when converting audio. The longer the past voice is, the better the accuracy of the conversion, but the longer the res is, the longer the calculation takes.
-(Probably because Transformer is a bottleneck, the calculation time will increase by the square of this length)
-
-Detail is [here](https://github.com/w-okada/voice-changer/issues/154#issuecomment-1502534841)
-
-#### GPU
-
-You can select the GPU to use in the onnxgpu version.
-
-In the onnxdirectML version, you can switch the GPU ON/OFF.
-
-On DirectML Version, these buottns is displayed.
-
-![image](https://github.com/w-okada/voice-changer/assets/48346627/5a66f237-e5b5-4819-9409-ff5eebb6e514)
-
-- cpu: use cpu
-- gpu0: use gpu0
-- gpu1: use gpu1
-- gpu2: use gpu2
-- gpu3: use gpu3
-
-Even if a GPU is not detected, gpu0 - gpu3 will still be displayed. If you specify a GPU that doesn't exist, the CPU will be used instead.[reference](https://github.com/w-okada/voice-changer/issues/410)
-
-#### AUDIO
-
-Choose the type of audio device you want to use. For more information, please refer to the [document](./tutorial_device_mode_ja.md).
-
-- Client: You can make use of the microphone input and speaker output with the GUI functions such as noise cancellation.
-- Server: VC Client can directly control the microphone and speaker to minimize latency.
-
-#### input
-
-You can select a sound input device such as a microphone input. It's also possible to input from audio files (size limit applies).
-
-For win user, system sound is available as input. Please note if you set the system sound as output, the sound loop occurs.
-
-#### output
-
-You can select audio output devices such as speakers and output.
-
-#### monitor
-
-In monitor mode, you can select audio output devices such as speaker output. This is only available in server device mode.
-
-Please refer to [this document](tutorial_monitor_consept_ja.md) for an overview of the idea.
-
-#### REC.
-
-It will output the converted audio to a file.
-
-### ServerIO Analizer
-
-We can record and confirm the input audio to the speech conversion AI and the output audio from the speech conversion AI.
-
-Please refer to [this document](trouble_shoot_communication_ja.md) for an overview of the idea.
-
-#### SIO rec.
-
-I will start/stop recording both the audio inputted into the voice conversion AI as well as the audio outputted from the voice conversion AI.
-
-#### output
-
-The AI will play back any audio that is input into it.
-
-#### in
-
-I will play the audio inputted to the speech conversion AI.
-
-#### out
-
-Play the audio output from the Speech Conversion AI.
-
-### more...
-
-You can do more advanced operations.
-
-#### Merge Lab
-
-It is possible to do synthesis of models.
-
-#### Advanced Setting
-
-You can set up more advanced settings.
-
-#### Server Info
-
-You can check the configuration of the current server.
-
-# Model Slot Edit Screen
-
-By pressing the edit button in the Model Slot Selection Area, you can edit the model slot.
-
-![image](https://github.com/w-okada/voice-changer/assets/48346627/a4735a2e-540e-4e7c-aa70-ba5b91ff09eb)
-
-## Icon Area
-
-You can change the image by clicking on the icon.
-
-## File Area
-
-You can download the file by clicking on the file name.
-
-## Upload Button
-
-You can upload the model.
-
-In the upload screen, you can select the voice changer type to upload.
-
-You can go back to the Model Slot Edit Screen by pressing the back button.
-
-![image](https://github.com/w-okada/voice-changer/assets/48346627/012c3585-0be2-4846-969a-882dcc07837b)
-
-## Sample Button
-
-You can download a sample.
-
-You can go back to the Model Slot Edit Screen by pressing the back button.
-
-![image](https://github.com/w-okada/voice-changer/assets/48346627/1c6e2529-af80-479a-8002-c37ebeb0c807)
-
-## Edit Button
-
-You can edit the details of the model slot.
+R7. Um erro pode ocorrer se o caminho da pasta contiver caracteres Unicode. Extraia o arquivo para um local que contenha apenas caracteres alfanuméricos.
