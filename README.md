@@ -1,6 +1,3 @@
-Aqui está a tradução ajustada para o formato de documentação do GitHub:
-
----
 
 # Cliente VC
 
